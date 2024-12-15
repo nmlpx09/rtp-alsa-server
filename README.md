@@ -1,2 +1,2 @@
-# simple-rtp-alsa-server
+#rtp-alsa-server
 simple rtp/alsa server
