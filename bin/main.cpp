@@ -35,7 +35,7 @@ int main() {
 
     auto ctx = std::make_shared<TContext>();
 
-    auto recvWorker = [rcv = std::move(rcv), ctx]() noexcept {
+    auto recvWorker = [rcv = std::move(rcv), ctx] noexcept {
         while(true) {
             if (auto result = rcv->Rcv(DATASIZE); result) {
                 if (auto rtp = NRtp::TRtp{std::move(result).value()}; rtp) {
@@ -49,11 +49,11 @@ int main() {
         }
     };
 
-    auto sendWorker = [send = std::move(send), ctx]() noexcept {
+    auto sendWorker = [send = std::move(send), ctx] noexcept {
         bool dropMode = false;
         while(true) {
             std::unique_lock<std::mutex> ulock{ctx->mutex};
-            ctx->cv.wait(ulock, [ctx]() { return !ctx->queue.empty(); });
+            ctx->cv.wait(ulock, [ctx] { return !ctx->queue.empty(); });
 
             if (dropMode) {
                 if (ctx->queue.size() == 1) {
