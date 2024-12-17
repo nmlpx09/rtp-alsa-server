@@ -5,7 +5,7 @@ simple rtp and alsa server
 # requirement
 
 1. socket
-3. c++20
+3. clang-19
 4. make
 5. libasound2-dev
 
