@@ -33,9 +33,9 @@ TRtp::TRtp(TData&& data) noexcept
     Ts = Swap32(headers->ts);
     Ssrc = Swap32(headers->ssrc);
 
-    auto payloadBegin = sizeof(TRtpHeaders) + sizeof(std::uint32_t) * headers->cc;
-
-    Payload = TPayload{Data}.subspan(payloadBegin);
+    if (auto payloadBegin = sizeof(TRtpHeaders) + sizeof(std::uint32_t) * headers->cc; payloadBegin < Data.size()) {
+        Payload = TPayload{Data}.subspan(payloadBegin);
+    }
 }
 
 TPayload TRtp::GetPayload() const noexcept {
