@@ -15,8 +15,7 @@ std::uint16_t Swap16(std::uint16_t value) {
 }
 
 TRtp::TRtp(TData&& data) noexcept 
-  : Data(std::move(data))
-{
+: Data(std::move(data)) {
     if (Data.size() < sizeof(TRtpHeaders)) {
         return;
     }
