@@ -37,13 +37,13 @@ int main() {
 
     auto recvWorker = [rcv = std::move(rcv), ctx]() noexcept {
         while(true) {
-            if (auto&& [ec, data] = rcv->Rcv(DATASIZE); ec) {
-                std::cerr << ec.message() << std::endl;
-            } else {
-                if (auto rtp = NRtp::TRtp{std::move(data)}; rtp) {
+            if (auto result = rcv->Rcv(DATASIZE); result) {
+                if (auto rtp = NRtp::TRtp{std::move(result).value()}; rtp) {
                     std::unique_lock<std::mutex> ulock{ctx->mutex};
                     ctx->queue.emplace_back(std::move(rtp));
                 }
+            } else {
+                std::cerr << result.error().message() << std::endl;
             }
             ctx->cv.notify_one();
         }

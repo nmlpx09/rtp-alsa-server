@@ -16,7 +16,7 @@ public:
     TSocket& operator=(TSocket&&) = delete;
 
     std::error_code Init() noexcept override;
-    std::pair<std::error_code, TData> Rcv(std::int32_t dataSize) const noexcept override;
+    std::expected<TData, std::error_code> Rcv(std::int32_t dataSize) const noexcept override;
 
 private:
     std::string Ip;

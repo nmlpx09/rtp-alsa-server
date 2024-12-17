@@ -1,5 +1,5 @@
-CC = g++
-CCFLAGS = -Ofast -std=c++20 -pedantic -Wall -W -Werror -Wextra -c -I.
+CC = clang++-19
+CCFLAGS = -O3 -std=c++2c -pedantic -Wall -W -Werror -Wextra -c -I.
 LDFLAGS = -lasound
 OBJ = bin/main.o rtp/rtp.o rcv/socket.o send/alsa.o
 RUN = bin/stream

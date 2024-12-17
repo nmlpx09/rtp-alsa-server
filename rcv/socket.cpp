@@ -30,7 +30,7 @@ std::error_code TSocket::Init() noexcept {
         .sin_addr = {
             .s_addr = inet_addr(Ip.c_str())
         },
-        .sin_zero = 0
+        .sin_zero = {0}
     };
 
     if (bind(Sockfd, (const sockaddr*)&servaddr, sizeof(servaddr)) < 0) {
@@ -40,13 +40,13 @@ std::error_code TSocket::Init() noexcept {
     return {};
 }
 
-std::pair<std::error_code, TData> TSocket::Rcv(std::int32_t dataSize) const noexcept {
+std::expected<TData, std::error_code> TSocket::Rcv(std::int32_t dataSize) const noexcept {
     if (Sockfd < 0) {
-        return std::make_pair(make_error_code(EErrorCode::SocketInit), TData{});
+        return std::unexpected(EErrorCode::SocketInit);
     }
 
     if (dataSize < 1) {
-        return std::make_pair(make_error_code(EErrorCode::Ok), TData{});
+        return TData{};
     }
 
     TData buffer(dataSize);
@@ -54,14 +54,14 @@ std::pair<std::error_code, TData> TSocket::Rcv(std::int32_t dataSize) const noex
     auto n = recv(Sockfd, buffer.data(), dataSize, MSG_WAITALL);
 
     if (n < 0) {
-        return std::make_pair(make_error_code(EErrorCode::Recv), TData{});
+         return std::unexpected(EErrorCode::Recv);
     }
 
     if (n < dataSize) {
-        return std::make_pair(make_error_code(EErrorCode::Ok), TData{});
+        return TData{};
     }
 
-    return std::make_pair(make_error_code(EErrorCode::Ok), std::move(buffer));
+    return buffer;
 }
 
 }
