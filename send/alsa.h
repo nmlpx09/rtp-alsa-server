@@ -27,7 +27,7 @@ public:
     TAlsa& operator=(TAlsa&&) = delete;
 
     std::error_code Init() noexcept override;
-    std::error_code Send(TPayload payload) noexcept override;
+    std::error_code Send(TPayload&& payload) noexcept override;
 
 private:
     std::string Device;

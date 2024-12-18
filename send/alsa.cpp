@@ -97,7 +97,7 @@ std::error_code TAlsa::Init() noexcept {
     return {};
 }
 
-std::error_code TAlsa::Send(TPayload payload) noexcept {
+std::error_code TAlsa::Send(TPayload&& payload) noexcept {
     if (SoundDevice == nullptr) {
         return make_error_code(EErrorCode::DeviceInit);
     }

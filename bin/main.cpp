@@ -69,7 +69,7 @@ int main() {
             ctx->queue.pop_front();
             ulock.unlock();
 
-            if (auto ec = send->Send(std::move(rtp.GetPayload())); ec) {
+            if (auto ec = send->Send(rtp.GetPayload()); ec) {
                 std::cerr << ec.message() << std::endl;
             }   
         }

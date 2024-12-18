@@ -10,7 +10,7 @@ namespace NSend{
 struct TInterface {
 public:
     virtual std::error_code Init() noexcept = 0;
-    virtual std::error_code Send(TPayload payload) noexcept = 0;
+    virtual std::error_code Send(TPayload&& payload) noexcept = 0;
     virtual ~TInterface() {};
 };
 
