@@ -20,7 +20,7 @@ TSocket::~TSocket() {
 }
 
 std::error_code TSocket::Init() noexcept {
-    if (Sockfd = socket(AF_INET, SOCK_DGRAM, 0); Sockfd < 0 ) {
+    if (Sockfd = socket(AF_INET, SOCK_DGRAM, 0); Sockfd < 0) {
         return make_error_code(EErrorCode::SocketOpen);
     }
 
