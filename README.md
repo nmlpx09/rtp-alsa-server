@@ -1,6 +1,6 @@
 # about
 
-simple rtp and alsa server
+a simple rtp to alsa server c++23
 
 # requirement
 

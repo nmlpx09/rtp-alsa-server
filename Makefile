@@ -2,7 +2,7 @@ CC = clang++-19
 CCFLAGS = -O3 -std=c++23 -pedantic -Wall -W -Werror -Wextra -c -I.
 DEFINES =
 LDFLAGS = -lasound
-OBJ = bin/main.o rtp/rtp.o rcv/socket.o send/alsa.o
+OBJ = bin/main.o common/utils.o rtp/rtp.o rcv/socket.o send/alsa.o
 RUN = bin/stream
 
 all: $(OBJ)
