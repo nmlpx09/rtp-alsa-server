@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include <common/utils.h>
 #include <rcv/interface.h>
 #include <rcv/socket.h>
 #include <rtp/rtp.h>
@@ -69,7 +70,13 @@ int main() {
             ctx->queue.pop_front();
             ulock.unlock();
 
-            if (auto ec = send->Send(rtp.GetPayload()); ec) {
+            auto payload = rtp.GetPayload();
+
+            if (NUtils::isZero(payload)) {
+                continue;
+            }
+
+            if (auto ec = send->Send(std::move(payload)); ec) {
                 std::cerr << ec.message() << std::endl;
             }   
         }
