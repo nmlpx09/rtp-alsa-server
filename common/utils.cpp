@@ -5,7 +5,9 @@
 namespace NUtils {
 
 bool isZero(const TPayload& payload) {
-    return payload.front() == 0 && !std::memcmp(payload.data(), payload.data() + 1, payload.size() - 1);
+    const auto* pointer = reinterpret_cast<const std::uint8_t*>(payload.data());
+    const auto size = payload.size() * sizeof(TData::value_type);
+    return payload.front() == 0 && !std::memcmp(pointer, pointer + 1, size - 1);
 }
 
 }

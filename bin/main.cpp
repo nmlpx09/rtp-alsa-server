@@ -40,13 +40,18 @@ int main() {
         while(true) {
             if (auto result = rcv->Rcv(DATASIZE); result) {
                 if (auto rtp = NRtp::TRtp{std::move(result).value()}; rtp) {
+                    if (NUtils::isZero(rtp.GetPayload())) {
+                        continue;
+                    }
+
                     std::unique_lock<std::mutex> ulock{ctx->mutex};
                     ctx->queue.emplace_back(std::move(rtp));
+                    ulock.unlock();
+                    ctx->cv.notify_one();
                 }
             } else {
                 std::cerr << result.error().message() << std::endl;
             }
-            ctx->cv.notify_one();
         }
     };
 
@@ -70,13 +75,7 @@ int main() {
             ctx->queue.pop_front();
             ulock.unlock();
 
-            auto payload = rtp.GetPayload();
-
-            if (NUtils::isZero(payload)) {
-                continue;
-            }
-
-            if (auto ec = send->Send(std::move(payload)); ec) {
+            if (auto ec = send->Send(rtp.GetPayload()); ec) {
                 std::cerr << ec.message() << std::endl;
             }   
         }
