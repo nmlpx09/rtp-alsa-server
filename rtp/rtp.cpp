@@ -20,7 +20,7 @@ TRtp::TRtp(TData&& data) noexcept
         return;
     }
 
-    const auto* headers = (const TRtpHeaders*)Data.data();
+    const auto* headers = reinterpret_cast<const TRtpHeaders*>(Data.data());
 
     V = headers->v;
     P = headers->p;
