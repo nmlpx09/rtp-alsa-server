@@ -43,10 +43,10 @@ int main() {
                     if (NUtils::isZero(rtp.GetPayload())) {
                         continue;
                     }
-
-                    std::unique_lock<std::mutex> ulock{ctx->mutex};
-                    ctx->queue.emplace_back(std::move(rtp));
-                    ulock.unlock();
+                    {
+                        std::lock_guard glock{ctx->mutex};
+                        ctx->queue.emplace_back(std::move(rtp));
+                    }
                     ctx->cv.notify_one();
                 }
             } else {
