@@ -61,8 +61,8 @@ std::error_code TAlsa::Init() noexcept {
     }
 
     snd_pcm_format_t format;
-    if (Format == "s16be") {
-        format = SND_PCM_FORMAT_S16_BE;
+    if (Format == "s16le") {
+        format = SND_PCM_FORMAT_S16_LE;
         FrameSize = sizeof(std::int16_t) * Channels;
     } else {
         return make_error_code(EErrorCode::Format);
@@ -72,7 +72,7 @@ std::error_code TAlsa::Init() noexcept {
         return make_error_code(EErrorCode::SetFormat);
     }
 
-    if (Rate != 48000 && Rate != 44100) {
+    if (Rate != 48000) {
         return make_error_code(EErrorCode::Rate);
     }
 

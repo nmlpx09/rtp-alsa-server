@@ -1,13 +1,12 @@
 # about
 
-a simple rtp to alsa server c++23
+a simple rtp to alsa server
 
 # requirement
 
-1. socket
-3. clang-19
-4. make
-5. libasound2-dev
+1. clang-20
+2. make
+3. libasound2-dev
 
 # build
 
@@ -22,6 +21,6 @@ make install
 in file default.pa `/etc/pulse/default.pa` add:
 
 `
-load-module module-null-sink sink_name=rtp rate=48000 format=s16be channels=2 sink_properties=device.description=<name>
-load-module module-rtp-send source=rtp.monitor destination_ip=<ip server> port=<port server> mtu=1932
+load-module module-null-sink sink_name=rtp sink_properties=device.description=Player
+load-module module-rtp-send source=rtp.monitor format=s16le rate=48000 channels=2 destination_ip=<ip> port=<port> mtu=1932
 `
